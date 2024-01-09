@@ -27,7 +27,7 @@ To install the `LogMessage` utility via Unity's Package Manager, follow these st
 
 2. **Add Package from Git URL**:
    - In the Package Manager, click the `+` icon at the top left corner and select `Add package from git URL...`.
-   - Enter the Git URL for this repository. It usually looks like `https://github.com/klazapp/Unity-Logger.git`.
+   - Enter the Git URL for this repository. It usually looks like `https://github.com/klazapp/Unity-Logger-Public.git`.
 
 3. **Import into Your Project**:
    - Unity will resolve and download the package.
