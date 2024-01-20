@@ -26,46 +26,46 @@ jobs:
         unzip docfx.zip -d ./docfx
 
     - name: Check for docfx.json
-  run: |
-    if [ ! -f docfx_project/docfx.json ]; then
-      mkdir -p docfx_project
-      echo '{
-        "metadata": [
-          {
-            "src": [
+      run: |
+        if [ ! -f docfx_project/docfx.json ]; then
+          mkdir -p docfx_project
+          echo '{
+            "metadata": [
               {
-                "files": ["**/*.cs"],
-                "exclude": ["obj/**", "bin/**"],
-                "src": "./"
+                "src": [
+                  {
+                    "files": ["**/*.cs"],
+                    "exclude": ["obj/**", "bin/**"],
+                    "src": "./"
+                  }
+                ],
+                "dest": "api"
               }
             ],
-            "dest": "api"
-          }
-        ],
-        "build": {
-          "content": [
-            {
-              "files": ["api/**.yml", "docs/**/*.md"],
-              "src": "./",
-              "dest": "_site",
-              "exclude": ["obj/**", "bin/**"]
+            "build": {
+              "content": [
+                {
+                  "files": ["api/**.yml", "docs/**/*.md"],
+                  "src": "./",
+                  "dest": "_site",
+                  "exclude": ["obj/**", "bin/**"]
+                }
+              ],
+              "resource": [
+                {
+                  "files": ["images/**"],
+                  "src": "./",
+                  "dest": "_site/images"
+                }
+              ],
+              "globalMetadata": {
+                "_appTitle": "Unity Logger Public Documentation"
+              },
+              "template": ["default"],
+              "dest": "_site"
             }
-          ],
-          "resource": [
-            {
-              "files": ["images/**"],
-              "src": "./",
-              "dest": "_site/images"
-            }
-          ],
-          "globalMetadata": {
-            "_appTitle": "Unity Logger Public Documentation"
-          },
-          "template": ["default"],
-          "dest": "_site"
-        }
-      }' > docfx_project/docfx.json
-    fi
+          }' > docfx_project/docfx.json
+        fi
 
     - name: Generate Documentation
       run: |
@@ -74,6 +74,15 @@ jobs:
 
     - name: List DocFX output
       run: ls -R docfx_project/_site
+
+    - name: List output directory
+      run: ls _site
+
+    - name: Echo contents of _site before deployment
+      run: ls -R _site
+
+    - name: Placeholder step
+      run: echo "Placeholder step to satisfy GitHub Actions requirements"
 
     - name: Deploy to Github Pages
       uses: peaceiris/actions-gh-pages@v3
