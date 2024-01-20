@@ -15,9 +15,6 @@ jobs:
       with:
         submodules: true
 
-    - name: Create Test folder
-      run: mkdir -p Test
-      
     - name: Setup .NET
       uses: actions/setup-dotnet@v2
       with:
@@ -28,13 +25,10 @@ jobs:
         wget https://github.com/dotnet/docfx/releases/download/v2.58/docfx.zip
         unzip docfx.zip -d ./docfx
 
-    - name: Create docfx_project folder
-      run:  mkdir -p docfx_project
-
-    - name: Check for docfx.json
+    - name: Create docfx_project folder and docfx.json
       run: |
+        mkdir -p docfx_project
         if [ ! -f docfx_project/docfx.json ]; then
-          mkdir -p docfx_project
           echo '{
             "metadata": [
               {
