@@ -30,8 +30,66 @@ jobs:
         if [ ! -f docfx_project/docfx.json ]; then
           mkdir -p docfx_project
           echo '{
-            "metadata": [{"src": [{"files": ["**/*.cs", "**/*.md"], "exclude": ["**/obj/**", "**/bin/**"]}], "dest": "api"}],
-            "build": {"content": [{"files": ["**/*.md", "api/**.yml"], "exclude": ["**/obj/**", "**/bin/**"]}], "resource": [{"files": ["images/**"]}], "template": ["default"], "dest": "_site", "globalMetadata": {"_appTitle": "Unity Logger Public Documentation"}}
+            "metadata": [
+              {
+                "src": [
+                  {
+                    "files": [
+                      "**/*.cs",
+                      "**/*.md"
+                    ],
+                    "exclude": [
+                      "**/obj/**",
+                      "**/bin/**"
+                    ],
+                    "src": "./"
+                  }
+                ],
+                "dest": "api"
+              }
+            ],
+            "build": {
+              "content": [
+                {
+                  "files": [
+                    "**/*.md"
+                  ],
+                  "src": "./",
+                  "dest": "_site/docs",
+                  "exclude": [
+                    "**/obj/**",
+                    "**/bin/**"
+                  ]
+                },
+                {
+                  "files": [
+                    "api/**.yml"
+                  ],
+                  "src": "./",
+                  "dest": "_site/api",
+                  "exclude": [
+                    "**/obj/**",
+                    "**/bin/**"
+                  ]
+                }
+              ],
+              "resource": [
+                {
+                  "files": [
+                    "images/**"
+                  ],
+                  "src": "./",
+                  "dest": "_site/images"
+                }
+              ],
+              "globalMetadata": {
+                "_appTitle": "Unity Logger Public Documentation"
+              },
+              "template": [
+                "default"
+              ],
+              "dest": "_site"
+            }
           }' > docfx_project/docfx.json
         fi
 
@@ -44,10 +102,10 @@ jobs:
       run: ls -R docfx_project/_site
 
     - name: List output directory
-      run: ls docfx_project/_site
+      run: ls _site
 
     - name: Echo contents of _site before deployment
-      run: ls -R docfx_project/_site
+      run: ls -R _site
       
     - name: Deploy to Github Pages
       uses: peaceiris/actions-gh-pages@v3
