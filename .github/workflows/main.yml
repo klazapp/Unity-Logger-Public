@@ -30,7 +30,7 @@ jobs:
         chmod +x ./docfx/docfx.exe
         mono ./docfx/docfx.exe build docfx_project/docfx.json
 
-    - name: Deploy
+    - name: Deploy to Github Pages
       uses: peaceiris/actions-gh-pages@v3
       with:
         github_token: ${{ secrets.GITHUB_TOKEN }}
