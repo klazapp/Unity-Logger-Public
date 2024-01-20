@@ -28,6 +28,9 @@ jobs:
     - name: Create docfx_project folder
       run: mkdir docfx_project
 
+    - name: List contents of the workspace
+      run: ls -R
+
     - name: Check for docfx.json
       run: |
         if [ ! -f docfx_project/docfx.json ]; then
