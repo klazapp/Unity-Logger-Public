@@ -1,5 +1,6 @@
 # LogMessage Utility for Unity
 
+
 ## Introduction
 The `LogMessage` utility class is part of the `com.Klazapp.Utility` namespace, designed for Unity projects to simplify logging process. It allows for an easy on/off switch to enable or disable all log messages in the app, eliminating the need to manually comment out or add log statements in each script.
 
