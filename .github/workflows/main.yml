@@ -40,9 +40,12 @@ jobs:
         chmod +x ./docfx/docfx.exe
         mono ./docfx/docfx.exe build docfx_project/docfx.json
 
-     - name: List output directory
-        run: ls _site
+    - name: List output directory
+      run: ls _site
 
+    - name: Echo contents of _site before deployment
+      run: ls -R _site
+      
     - name: Deploy to Github Pages
       uses: peaceiris/actions-gh-pages@v3
       with:
