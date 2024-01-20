@@ -44,7 +44,7 @@ jobs:
       run: ls -R docfx_project/_site
 
     - name: List output directory
-      run: ls _site
+      run: ls docfx_project/_site
 
     - name: Echo contents of _site before deployment
       run: ls -R _site
