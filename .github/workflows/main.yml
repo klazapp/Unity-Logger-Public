@@ -32,7 +32,8 @@ jobs:
           
     - name: Create folders in gh-pages branch
       run: |
-        git branch
+        git fetch --all
+        git branch -a
 
     - name: Check for docfx.json
       run: |
