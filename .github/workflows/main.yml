@@ -100,11 +100,11 @@ jobs:
         echo "Contents of the docfx_project folder:"
         ls -R docfx_project
         echo "Contents of the _site folder before build:"
-        ls -R _site
+        ls -R docfx_project/_site
         chmod +x ./docfx/docfx.exe
         mono ./docfx/docfx.exe build docfx_project/docfx.json
         echo "Contents of the _site folder after build:"
-        ls -R _site
+        ls -R docfx_project/_site
 
     - name: Generate Documentation
       run: |
