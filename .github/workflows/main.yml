@@ -25,13 +25,6 @@ jobs:
         wget https://github.com/dotnet/docfx/releases/download/v2.58/docfx.zip
         unzip docfx.zip -d ./docfx
 
-    - name: Create docfx.json
-      run: |
-        echo '{' > docfx_project/docfx.json
-        echo '  "metadata": [...],' >> docfx_project/docfx.json
-        echo '  "build": {...}' >> docfx_project/docfx.json
-        echo '}' >> docfx_project/docfx.json
-
     - name: Generate Documentation
       run: |
         chmod +x ./docfx/docfx.exe
