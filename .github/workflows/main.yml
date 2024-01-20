@@ -37,6 +37,7 @@ jobs:
           if [ -f Documentation~/manual/toc.md ]; then
             sed -i -e 's/*/#/g' Documentation~/manual/toc.md
             sed -i -e 's/     /#/g' Documentation~/manu
+          fi
           
       - name: Disable toc if not exists
         run: |
