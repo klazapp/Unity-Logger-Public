@@ -40,6 +40,9 @@ jobs:
         chmod +x ./docfx/docfx.exe
         mono ./docfx/docfx.exe build docfx_project/docfx.json
 
+    - name: List DocFX output
+      run: ls -R docfx_project/_site
+
     - name: List output directory
       run: ls _site
 
