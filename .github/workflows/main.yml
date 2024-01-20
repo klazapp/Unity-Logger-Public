@@ -1,11 +1,14 @@
 name: Unity DocFx
+
 on:
   push:
     branches:
       - main
+
 jobs:
   build:
     runs-on: ubuntu-latest
+
     steps:
       - name: Move everything inside the manual/ folder
         run: |
@@ -33,19 +36,19 @@ jobs:
         run: |
           if [ -f Documentation~/manual/TableOfContents.md ]; then
             if [ -f Documentation~/manual/TableOfContents.md ]; then
-            mv Documentation~/manual/TableOfContents.md Documentation~/manual/toc.md
+              mv Documentation~/manual/TableOfContents.md Documentation~/manual/toc.md
             fi
             if [ -f Documentation~/manual/toc.md ]; then
-            sed -i -e 's/*/#/g' Documentation~/manual/toc.md
-            sed -i -e 's/     /#/g' Documentation~/manual/toc.md
+              sed -i -e 's/*/#/g' Documentation~/manual/toc.md
+              sed -i -e 's/     /#/g' Documentation~/manual/toc.md
             fi
-            fi
+          fi
 
       - name: Disable toc if not exists
         run: |
           if [ ! -f Documentation~/manual/toc.md ]; then
-            sed -i '19i\            "_disableToc": {"manual/**/*.md": false},' Documentation~/docfx.json
-            sed -i '19i\            "_layout": {"manual/**/*.md": "landing"},'  Documentation~/docfx.json
+            sed -i '19i\            "_disableToc": {"manual/**/*.md": false},' ./docfx.json
+            sed -i '19i\            "_layout": {"manual/**/*.md": "landing"},'  ./docfx.json
           fi
 
       - name: Set favicon if exists
@@ -55,7 +58,7 @@ jobs:
             favicons=( $faviconPattern )
             faviconPath=${favicons[0]}
             relativeFaviconPath=${faviconPath:15}
-            sed -i '12i\            "_appFaviconPath": "'${relativeFaviconPath}'",' Documentation~/docfx.json
+            sed -i '12i\            "_appFaviconPath": "'${relativeFaviconPath}'",' ./docfx.json
           fi
 
       - name: Set logo if exists
@@ -65,15 +68,15 @@ jobs:
             logos=( $logoPattern )
             logoPath=${logos[0]}
             relativeLogoPath=${logoPath:15}
-            sed -i '12i\            "_appLogoPath": "'${relativeLogoPath}'",' Documentation~/docfx.json
+            sed -i '12i\            "_appLogoPath": "'${relativeLogoPath}'",' ./docfx.json
           fi
 
       - name: Set filter if exists
         run: |
           if [ -f Documentation~/manual/filter.yml ]; then
-            sed -i '5i\        "filter": "manual/filter.yml",' Documentation~/docfx.json
+            sed -i '5i\        "filter": "manual/filter.yml",' ./docfx.json
           elif [ -f Documentation~/manual/filter.yaml ]; then
-            sed -i '5i\        "filter": "manual/filter.yaml",' Documentation~/docfx.json
+            sed -i '5i\        "filter": "manual/filter.yaml",' ./docfx.json
           fi
 
       - name: Dotnet Setup
@@ -85,7 +88,7 @@ jobs:
         run: dotnet tool update -g docfx
 
       - name: Build
-        run: docfx Documentation~/docfx.json
+        run: docfx ./docfx.json
 
       - name: Generate redirect
         env:
@@ -93,4 +96,3 @@ jobs:
         run: |
           url=$(gh api "repos/$GITHUB_REPOSITORY/pages" --jq '.html_url')
           sed -i '/<\/head>/i\      <meta http-equiv="refresh" content="0;URL='"$url"manual/'">' _site/index.html
-
