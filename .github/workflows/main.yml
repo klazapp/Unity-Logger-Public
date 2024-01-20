@@ -46,11 +46,9 @@ jobs:
 
       - name: Disable toc if not exists
         run: |
-          if [ ! -f Documentation/manual/toc.md ]; then
-            if [ ! -f Documentation/manual/toc.md ]; then
-            sed -i '19i\            "_disableToc": {"manual/**/*.md": false},' Documentation/docfx.json
-              sed -i '19i\            "_layout": {"manual/**/*.md": "landing"},'  Documentation/docfx.json
-            fi
+          if [ ! -f Documentation~/manual/toc.md ]; then
+            sed -i '19i\            "_disableToc": {"manual/**/*.md": false},' DocFx/docfx.json
+            sed -i '19i\            "_layout": {"manual/**/*.md": "landing"},'  DocFx/docfx.json
           fi
 
       - name: Set favicon if exists
@@ -60,7 +58,7 @@ jobs:
             favicons=( $faviconPattern )
             faviconPath=${favicons[0]}
             relativeFaviconPath=${faviconPath:15}
-            sed -i '12i\            "_appFaviconPath": "'${relativeFaviconPath}'",' Documentation/docfx.json
+            sed -i '12i\            "_appFaviconPath": "'${relativeFaviconPath}'",' DocFx/docfx.json
           fi
 
       - name: Set logo if exists
@@ -70,15 +68,15 @@ jobs:
             logos=( $logoPattern )
             logoPath=${logos[0]}
             relativeLogoPath=${logoPath:15}
-            sed -i '12i\            "_appLogoPath": "'${relativeLogoPath}'",' Documentation/docfx.json
+            sed -i '12i\            "_appLogoPath": "'${relativeLogoPath}'",' DocFx/docfx.json
           fi
 
       - name: Set filter if exists
         run: |
           if [ -f Documentation~/manual/filter.yml ]; then
-            sed -i '5i\        "filter": "manual/filter.yml",' Documentation/docfx.json
+            sed -i '5i\        "filter": "manual/filter.yml",' DocFx/docfx.json
           elif [ -f Documentation~/manual/filter.yaml ]; then
-            sed -i '5i\        "filter": "manual/filter.yaml",' Documentation/docfx.json
+            sed -i '5i\        "filter": "manual/filter.yaml",' DocFx/docfx.json
           fi
 
       - name: Dotnet Setup
@@ -90,7 +88,7 @@ jobs:
         run: dotnet tool update -g docfx
 
       - name: Build
-        run: docfx Documentation/docfx.json
+        run: docfx DocFx/docfx.json
 
       - name: Generate redirect
         env:
