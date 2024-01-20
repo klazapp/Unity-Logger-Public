@@ -1,0 +1,44 @@
+{
+  "metadata": [
+    {
+      "src": [
+        {
+          "src": "..",
+          "files": ["**/*.cs"]
+        }
+      ],
+      "dest": "api",
+      "globalNamespaceId": "Global",
+      "allowCompilationErrors": true
+    }
+  ],
+  "build": {
+    "content": [
+      {
+        "files": ["index.md", "toc.yml"]
+      },
+      {
+        "src": "license",
+        "files": ["*.md"],
+        "dest": "license"
+      },
+      {
+        "src": "changelog",
+        "files": ["*.md"],
+        "dest": "changelog"
+      },
+      {
+        "src": "api",
+        "files": ["*.yml", "index.md"],
+        "dest": "api"
+      },
+      {
+        "src": "manual",
+        "files": ["*.md"],
+        "dest": "manual"
+      }
+    ],
+    "template": ["default"],
+    "dest": "../_site"
+  }
+}
