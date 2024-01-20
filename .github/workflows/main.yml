@@ -25,16 +25,12 @@ jobs:
         wget https://github.com/dotnet/docfx/releases/download/v2.58/docfx.zip
         unzip docfx.zip -d ./docfx
 
-    - name: Create docfx_project folder
-      run: mkdir docfx_project
-
-    - name: List contents of the workspace
-      run: ls -R
+    - name: Create docfx_project folder if it doesn't exist
+      run: mkdir -p docfx_project
 
     - name: Check for docfx.json
       run: |
         if [ ! -f docfx_project/docfx.json ]; then
-          mkdir -p docfx_project
           echo '{
             "metadata": [
               {
