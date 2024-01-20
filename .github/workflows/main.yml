@@ -32,13 +32,15 @@ jobs:
       - name: Generate manual Table of Contents
         run: |
           if [ -f Documentation~/manual/TableOfContents.md ]; then
+            if [ -f Documentation~/manual/TableOfContents.md ]; then
             mv Documentation~/manual/TableOfContents.md Documentation~/manual/toc.md
-          fi
-          if [ -f Documentation~/manual/toc.md ]; then
+            fi
+            if [ -f Documentation~/manual/toc.md ]; then
             sed -i -e 's/*/#/g' Documentation~/manual/toc.md
-            sed -i -e 's/     /#/g' Documentation~/manu
-          fi
-          
+            sed -i -e 's/     /#/g' Documentation~/manual/toc.md
+            fi
+            fi
+
       - name: Disable toc if not exists
         run: |
           if [ ! -f Documentation~/manual/toc.md ]; then
