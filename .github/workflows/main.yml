@@ -4,6 +4,10 @@ author: KLAZAPP
 branding:
   icon: 'file-text'
   color: 'white'
+on:
+  push:
+    branches:
+      - main
 inputs:
   github_token:
     description: 'Set a generated GITHUB_TOKEN for pushing to the remote branch.'
