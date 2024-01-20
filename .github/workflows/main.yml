@@ -25,15 +25,19 @@ jobs:
         wget https://github.com/dotnet/docfx/releases/download/v2.58/docfx.zip
         unzip docfx.zip -d ./docfx
 
-    - name: Create docfx_project folder
-      run: mkdir -p docfx_project
-
-    - name: List current directory contents
-      run: ls
+    - name: Create folders in gh-pages branch
+      run: |
+        git checkout gh-pages
+        mkdir -p Manual Api Changelog License
+        git add Manual Api Changelog License
+        git commit -m "Create folders for DocFX documentation"
+        git push origin gh-pages
+        git checkout main
 
     - name: Check for docfx.json
       run: |
         if [ ! -f docfx_project/docfx.json ]; then
+          mkdir -p docfx_project
           echo '{
             "metadata": [
               {
