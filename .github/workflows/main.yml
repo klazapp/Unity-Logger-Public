@@ -17,7 +17,8 @@ jobs:
 
     - name: Create Test folder
       run: mkdir Test
-      uses: stefanzweifel/git-auto-commit-action@v4
+
+    - uses: stefanzweifel/git-auto-commit-action@v4
       
     - name: Setup .NET
       uses: actions/setup-dotnet@v2
