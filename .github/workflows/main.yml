@@ -27,10 +27,10 @@ jobs:
 
     - name: Create docfx.json
       run: |
-        echo '{' > docfx.json
-        echo '  "metadata": [...],' >> docfx.json
-        echo '  "build": {...}' >> docfx.json
-        echo '}' >> docfx.json
+        echo '{' > docfx_project/docfx.json
+        echo '  "metadata": [...],' >> docfx_project/docfx.json
+        echo '  "build": {...}' >> docfx_project/docfx.json
+        echo '}' >> docfx_project/docfx.json
 
     - name: Generate Documentation
       run: |
