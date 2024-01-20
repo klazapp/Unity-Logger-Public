@@ -15,9 +15,6 @@ jobs:
       with:
         submodules: true
 
-    - name: Create Test folder
-      run: mkdir -p Test
-      
     - name: Setup .NET
       uses: actions/setup-dotnet@v2
       with:
@@ -28,8 +25,106 @@ jobs:
         wget https://github.com/dotnet/docfx/releases/download/v2.58/docfx.zip
         unzip docfx.zip -d ./docfx
 
-    - name: Create docfx_project folder
-      run:  mkdir -p docfx_project
+    # This step needs to happen before anything else!
+    - name: Move everything inside the manual/ folder.
+      shell: bash
+      run: |
+        mkdir -p manual
+        if [ -d Documentation~ ] && [ "$(ls -A Documentation~)" ]; then
+          mv -v Documentation~/* manual/
+        else
+          mkdir -p Documentation~
+        fi
+        mv -v manual Documentation~/manual
+
+    # Generate pages, tables of contents, the docfx.json and anything the docfx needs.
+
+    - name: Generate index page
+      shell: bash
+      run: echo 'This page redirects to the [manual](manual/).' > Documentation~/index.md
+
+    - name: Generate main Table of Contents
+      shell: bash
+      run: |
+        echo '- name: Manual
+          href: manual/
+          homepage: manual/index.md
+        - name: Scripting API
+          href: api/
+          homepage: api/index.md' > Documentation~/toc.yml
+
+    - name: Generate manual Table of Contents
+      shell: bash
+      # Replace * and 5 consecutive spaces with # in the Table of Contents to convert Unity's format to DocFX's format.
+      run: |
+        if [ -f Documentation~/manual/TableOfContents.md ]; then
+          mv Documentation~/manual/TableOfContents.md Documentation~/manual/toc.md
+        fi
+        if [ -f Documentation~/manual/toc.md ]; then
+          sed -i -e 's/*/#/g' Documentation~/manual/toc.md
+          sed -i -e 's/     /#/g' Documentation~/manual/toc.md
+        fi
+
+    - name: Generate manual index page
+      shell: bash
+      run: |
+        if [ ! -f Documentation~/manual/index.md ] && [ -f README.md ]; then
+          cp README.md Documentation~/manual/index.md
+        fi
+
+    - name: Generate api index page
+      shell: bash
+      run: |
+        mkdir -p Documentation~/api
+        if [ -f Documentation~/api_index.md ]; then
+          cp Documentation~/api_index.md Documentation~/api/index.md
+          rm Documentation~/api_index.md
+        else
+          echo 'This is the documentation for the Scripting APIs of this package.' > Documentation~/api/index.md
+        fi
+
+    - name: Generate changelog page
+      shell: bash
+      run: |
+        if [ -f CHANGELOG.md ]; then
+          mkdir -p Documentation~/changelog
+          cp CHANGELOG.md Documentation~/changelog/CHANGELOG.md
+          echo '# [Changes](CHANGELOG.md)' > Documentation~/changelog/toc.md
+          echo '- name: Changelog' >> Documentation~/toc.yml
+          echo '  href: changelog/' >> Documentation~/toc.yml
+          echo '  homepage: changelog/CHANGELOG.md' >> Documentation~/toc.yml
+        fi
+
+    - name: Generate license page
+      shell: bash
+      run: |
+        if [ -f LICENSE ] && [ ! -f LICENSE.md ]; then
+          mv -v LICENSE LICENSE.md
+        fi
+        if [ -f LICENSE.md ]; then
+          mkdir -p Documentation~/license
+          cp LICENSE.md Documentation~/license/LICENSE.md
+          echo '# [License](LICENSE.md)' > Documentation~/license/toc.md
+          if [ -f 'Third Party Notices.md' ]; then
+            cp 'Third Party Notices.md' 'Documentation~/license/Third Party Notices.md'
+            sed -i '1i# [Third Party Notices](Third Party Notices.md)' Documentation~/license/toc.md
+          fi
+          echo '- name: License' >> Documentation~/toc.yml
+          echo '  href: license/' >> Documentation~/toc.yml
+          echo '  homepage: license/LICENSE.md' >> Documentation~/toc.yml
+        fi
+
+    - name: Read package.json
+      shell: bash
+      run: |
+        if [ -f package.json ]; then
+          content=`cat package.json`
+        else
+          content='{}'
+        fi
+        echo 'package<<EOF' >> $GITHUB_ENV
+        echo $content >> $GITHUB_ENV
+        echo 'EOF' >> $GITHUB_ENV
 
     - name: Check for docfx.json
       run: |
