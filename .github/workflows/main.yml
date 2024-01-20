@@ -1,22 +1,11 @@
 name: Unity DocFx
-description: Automatically deploys Unity packages to GitHub Pages
-author: KLAZAPP
-branding:
-  icon: 'file-text'
-  color: 'white'
 on:
   push:
     branches:
       - main
-inputs:
-  github_token:
-    description: 'Set a generated GITHUB_TOKEN for pushing to the remote branch.'
-    required: false
-
 jobs:
   build:
     runs-on: ubuntu-latest
-
     steps:
       - name: Move everything inside the manual/ folder
         run: |
@@ -47,78 +36,4 @@ jobs:
           fi
           if [ -f Documentation~/manual/toc.md ]; then
             sed -i -e 's/*/#/g' Documentation~/manual/toc.md
-            sed -i -e 's/     /#/g' Documentation~/manual/toc.md
-          fi
-
-      - name: Generate manual index page
-        run: |
-          if [ ! -f Documentation~/manual/index.md ] && [ -f README.md ]; then
-            cp README.md Documentation~/manual/index.md
-          fi
-
-      - name: Generate API index page
-        run: |
-          mkdir -p Documentation~/api
-          if [ -f Documentation~/api_index.md ]; then
-            cp Documentation~/api_index.md Documentation~/api/index.md
-            rm Documentation~/api_index.md
-          else
-            echo 'This is the documentation for the Scripting APIs of this package.' > Documentation~/api/index.md
-          fi
-
-      - name: Generate changelog page
-        run: |
-          if [ -f CHANGELOG.md ]; then
-            mkdir -p Documentation~/changelog
-            cp CHANGELOG.md Documentation~/changelog/CHANGELOG.md
-            echo '# [Changes](CHANGELOG.md)' > Documentation~/changelog/toc.md
-            echo '- name: Changelog' >> Documentation~/toc.yml
-            echo '  href: changelog/' >> Documentation~/toc.yml
-            echo '  homepage: changelog/CHANGELOG.md' >> Documentation~/toc.yml
-          fi
-
-      - name: Generate license page
-        run: |
-          if [ -f LICENSE ] && [ ! -f LICENSE.md ]; then
-            mv -v LICENSE LICENSE.md
-          fi
-          if [ -f LICENSE.md ]; then
-            mkdir -p Documentation~/license
-            cp LICENSE.md Documentation~/license/LICENSE.md
-            echo '# [License](LICENSE.md)' > Documentation~/license/toc.md
-            if [ -f 'Third Party Notices.md' ]; then
-              cp 'Third Party Notices.md' 'Documentation~/license/Third Party Notices.md'
-              sed -i '1i# [Third Party Notices](Third Party Notices.md)' Documentation~/license/toc.md
-            fi
-            echo '- name: License' >> Documentation~/toc.yml
-            echo '  href: license/' >> Documentation~/toc.yml
-            echo '  homepage: license/LICENSE.md' >> Documentation~/toc.yml
-          fi
-
-      - name: Read package.json
-        run: |
-          if [ -f package.json ]; then
-            content=$(cat package.json)
-          else
-            content='{}'
-          fi
-          echo "package<<EOF" >> $GITHUB_ENV
-          echo "$content" >> $GITHUB_ENV
-          echo "EOF" >> $GITHUB_ENV
-
-      - name: Generate docfx.json
-        env:
-          GITHUB_TOKEN: ${{ inputs.github_token }}
-        run: |
-          url=$(gh api "repos/$GITHUB_REPOSITORY/pages" --jq '.html_url')
-          echo '{
-              "metadata": [{
-                  "src": [{"src": "..", "files": ["**/*.cs"]}],
-                  "dest": "api",
-                  "globalNamespaceId": "Global",
-                  "allowCompilationErrors": true
-              }],
-              "build": {
-                  "globalMetadata": {
-                      "_appTitle": "'${{ fromJson(env.package).displayName }}' | '${{ fromJson(env.package).version }}'",
-                      "_appFooter":
+            sed -i -e 's/     /#/g' Documentation~/manu
