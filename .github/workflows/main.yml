@@ -1,31 +1,37 @@
-name: docfx-unitypackage
+name: Generate DocFX Documentation
 
 on:
-  workflow_dispatch:
   push:
     branches:
-      - main
+      - main  # or any other branch you want to trigger on
 
 jobs:
-  build-and-deploy:
+  build-docs:
     runs-on: ubuntu-latest
-    permissions:
-      contents: write
 
     steps:
-      - name: Checkout
-        uses: actions/checkout@v4
-        with:
-          submodules: true
+    - name: Checkout Repository
+      uses: actions/checkout@v3
+      with:
+        submodules: true  # If you have submodules, set to 'true'
 
-      - name: Build
-        uses: CaseyHofland/docfx-unitypackage@v1
-        with:
-          github_token: ${{ secrets.GITHUB_TOKEN }}
+    - name: Setup .NET
+      uses: actions/setup-dotnet@v2
+      with:
+        dotnet-version: '3.1.x'  # Specify the .NET version
 
-      - name: Deploy
-        uses: peaceiris/actions-gh-pages@v3
-        with:
-          github_token: ${{ secrets.GITHUB_TOKEN }}
-          publish_branch: gh-pages
-          publish_dir: _site
+    - name: Install DocFX
+      run: |
+        wget https://github.com/dotnet/docfx/releases/download/v2.58/docfx.zip
+        unzip docfx.zip -d docfx
+
+    - name: Generate Documentation
+      run: |
+        ./docfx/docfx build docfx_project/docfx.json
+
+    - name: Deploy to GitHub Pages
+      uses: peaceiris/actions-gh-pages@v3
+      with:
+        github_token: ${{ secrets.GITHUB_TOKEN }}
+        publish_branch: gh-pages
+        publish_dir: ./_site  # or the output directory of your DocFX build
