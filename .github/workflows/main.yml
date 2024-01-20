@@ -1,8 +1,5 @@
 name: Generate DocFX Documentation
-inputs:
-  github_token:
-    description: 'Set a generated GITHUB_TOKEN for pushing to the remote branch.'
-    required: false
+
 on:
   push:
     branches:
@@ -36,6 +33,6 @@ jobs:
     - name: Deploy to Github Pages
       uses: peaceiris/actions-gh-pages@v3
       with:
-        github_token: ${{ inputs.github_token }}
+        github_token:  ${{ GITHUB_TOKEN }}
         publish_branch: gh-pages
         publish_dir: _site
