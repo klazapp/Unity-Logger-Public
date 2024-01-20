@@ -9,6 +9,11 @@
     "title": "| Klazapp Logger | 1.0.0",
     "keywords": "This page redirects to the manual."
   },
+   "changelog/index.html": {
+    "href": "changelog/index.html",
+    "title": "| Klazapp Logger | 1.0.0",
+    "keywords": "This is the documentation for the changelogs of this package."
+  },
   "license/LICENSE.html": {
     "href": "license/LICENSE.html",
     "title": "| Klazapp Logger | 1.0.0",
