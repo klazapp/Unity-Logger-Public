@@ -25,15 +25,14 @@ jobs:
         wget https://github.com/dotnet/docfx/releases/download/v2.58/docfx.zip
         unzip docfx.zip -d ./docfx
 
+    - name: Generate HTML
+      run: |
+        echo "<html><body><h1>Hello, World!</h1></body></html>" > index.html
+        echo "Generated HTML file."
+          
     - name: Create folders in gh-pages branch
       run: |
         git branch
-        git checkout gh-pages
-        mkdir -p Manual Api Changelog License
-        git add Manual Api Changelog License
-        git commit -m "Create folders for DocFX documentation"
-        git push origin gh-pages
-        git checkout main
 
     - name: Check for docfx.json
       run: |
