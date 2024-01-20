@@ -73,10 +73,11 @@ jobs:
 
       - name: Set filter if exists
         run: |
-          if [ -f Documentation~/manual/filter.yml ]; then
-            sed -i '5i\        "filter": "manual/filter.yml",' DocFx/docfx.json
-          elif [ -f Documentation~/manual/filter.yaml ]; then
-            sed -i '5i\        "filter": "manual/filter.yaml",' DocFx/docfx.json
+          if [ ! -f Documentation/manual/toc.md ]; then
+            if [ ! -f Documentation/manual/toc.md ]; then
+          sed -i '19i\            "_disableToc": {"manual/**/*.md": false},' DocFx/docfx.json
+              sed -i '19i\            "_layout": {"manual/**/*.md": "landing"},'  DocFx/docfx.json
+            fi
           fi
 
       - name: Dotnet Setup
