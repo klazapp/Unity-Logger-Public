@@ -15,9 +15,5 @@
       "email": "klazapp@klazapp.com",
       "url": "https://www.klazapp.com"
     },
-   "repository": {
-    "type": "git",
-    "url": "https://github.com/klazapp/Unity-Logger-Public.git"
-  },
     "documentationUrl": "https://github.com/klazapp/Unity-Logger-Public"
 }
