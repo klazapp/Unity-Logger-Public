@@ -15,6 +15,9 @@ jobs:
       with:
         submodules: true
 
+    - name: Create Test folder
+      run: mkdir Test
+      
     - name: Setup .NET
       uses: actions/setup-dotnet@v2
       with:
