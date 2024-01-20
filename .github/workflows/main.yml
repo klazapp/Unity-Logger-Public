@@ -30,40 +30,8 @@ jobs:
         if [ ! -f docfx_project/docfx.json ]; then
           mkdir -p docfx_project
           echo '{
-            "metadata": [
-              {
-                "src": [
-                  {
-                    "files": ["**/*.cs"],
-                    "exclude": ["obj/**", "bin/**"],
-                    "src": "./"
-                  }
-                ],
-                "dest": "api"
-              }
-            ],
-            "build": {
-              "content": [
-                {
-                  "files": ["api/**.yml", "docs/**/*.md"],
-                  "src": "./",
-                  "dest": "_site",
-                  "exclude": ["obj/**", "bin/**"]
-                }
-              ],
-              "resource": [
-                {
-                  "files": ["images/**"],
-                  "src": "./",
-                  "dest": "_site/images"
-                }
-              ],
-              "globalMetadata": {
-                "_appTitle": "Unity Logger Public Documentation"
-              },
-              "template": ["default"],
-              "dest": "_site"
-            }
+            "metadata": [{"src": [{"files": ["**/*.cs", "**/*.md"], "exclude": ["**/obj/**", "**/bin/**"]}], "dest": "api"}],
+            "build": {"content": [{"files": ["**/*.md", "api/**.yml"], "exclude": ["**/obj/**", "**/bin/**"]}], "resource": [{"files": ["images/**"]}], "template": ["default"], "dest": "_site", "globalMetadata": {"_appTitle": "Unity Logger Public Documentation"}}
           }' > docfx_project/docfx.json
         fi
 
@@ -80,10 +48,7 @@ jobs:
 
     - name: Echo contents of _site before deployment
       run: ls -R _site
-
-    - name: Placeholder step
-      run: echo "Placeholder step to satisfy GitHub Actions requirements"
-
+      
     - name: Deploy to Github Pages
       uses: peaceiris/actions-gh-pages@v3
       with:
