@@ -47,6 +47,7 @@ jobs:
       - name: Disable toc if not exists
         run: |
           if [ ! -f Documentation~/manual/toc.md ]; then
+            cd /path/to/docfx.json/directory
             sed -i '19i\            "_disableToc": {"manual/**/*.md": false},' ./docfx.json
             sed -i '19i\            "_layout": {"manual/**/*.md": "landing"},'  ./docfx.json
           fi
