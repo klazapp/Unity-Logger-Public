@@ -1,99 +1,44 @@
-name: Unity DocFx
-
+# Your GitHub workflow file under .github/workflows/
+# Trigger the action on push to main
 on:
   push:
     branches:
       - main
 
+# Sets permissions of the GITHUB_TOKEN to allow deployment to GitHub Pages
+permissions:
+  actions: read
+  pages: write
+  id-token: write
+
+# Allow only one concurrent deployment, skipping runs queued between the run in-progress and latest queued.
+# However, do NOT cancel in-progress runs as we want to allow these production deployments to complete.
+concurrency:
+  group: "pages"
+  cancel-in-progress: false
+
 jobs:
-  build:
+  publish-docs:
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
     runs-on: ubuntu-latest
-
     steps:
-      - name: Move everything inside the manual/ folder
-        run: |
-          mkdir -p manual
-          if [ -d Documentation~ ] && [ "$(ls -A Documentation~)" ]; then
-            mv -v Documentation~/* manual/
-          else
-            mkdir -p Documentation~
-          fi
-          mv -v manual Documentation~/manual
-
-      - name: Generate index page
-        run: echo 'This page redirects to the [manual](manual/).' > Documentation~/index.md
-
-      - name: Generate main Table of Contents
-        run: |
-          echo '- name: Manual
-            href: manual/
-            homepage: manual/index.md
-          - name: Scripting API
-            href: api/
-            homepage: api/index.md' > Documentation~/toc.yml
-
-      - name: Generate manual Table of Contents
-        run: |
-          if [ -f Documentation~/manual/TableOfContents.md ]; then
-            if [ -f Documentation~/manual/TableOfContents.md ]; then
-              mv Documentation~/manual/TableOfContents.md Documentation~/manual/toc.md
-            fi
-            if [ -f Documentation~/manual/toc.md ]; then
-              sed -i -e 's/*/#/g' Documentation~/manual/toc.md
-              sed -i -e 's/     /#/g' Documentation~/manual/toc.md
-            fi
-          fi
-
-      - name: Disable toc if not exists
-        run: |
-          if [ ! -f Documentation~/manual/toc.md ]; then
-            cd /path/to/docfx.json/directory
-            sed -i '19i\            "_disableToc": {"manual/**/*.md": false},' ./docfx.json
-            sed -i '19i\            "_layout": {"manual/**/*.md": "landing"},'  ./docfx.json
-          fi
-
-      - name: Set favicon if exists
-        run: |
-          faviconPattern="Documentation~/manual/images/favicon.*"
-          if compgen -G $faviconPattern > /dev/null; then
-            favicons=( $faviconPattern )
-            faviconPath=${favicons[0]}
-            relativeFaviconPath=${faviconPath:15}
-            sed -i '12i\            "_appFaviconPath": "'${relativeFaviconPath}'",' ./docfx.json
-          fi
-
-      - name: Set logo if exists
-        run: |
-          logoPattern="Documentation~/manual/images/logo.*"
-          if compgen -G $logoPattern > /dev/null; then
-            logos=( $logoPattern )
-            logoPath=${logos[0]}
-            relativeLogoPath=${logoPath:15}
-            sed -i '12i\            "_appLogoPath": "'${relativeLogoPath}'",' ./docfx.json
-          fi
-
-      - name: Set filter if exists
-        run: |
-          if [ -f Documentation~/manual/filter.yml ]; then
-            sed -i '5i\        "filter": "manual/filter.yml",' ./docfx.json
-          elif [ -f Documentation~/manual/filter.yaml ]; then
-            sed -i '5i\        "filter": "manual/filter.yaml",' ./docfx.json
-          fi
-
+      - name: Checkout
+        uses: actions/checkout@v3
       - name: Dotnet Setup
         uses: actions/setup-dotnet@v3
         with:
-          dotnet-version: 7.x
+          dotnet-version: 8.x
 
-      - name: Dotnet Update
-        run: dotnet tool update -g docfx
+      - run: dotnet tool update -g docfx
+      - run: docfx <docfx-project-path>/docfx.json
 
-      - name: Build
-        run: docfx ./docfx.json
-
-      - name: Generate redirect
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        run: |
-          url=$(gh api "repos/$GITHUB_REPOSITORY/pages" --jq '.html_url')
-          sed -i '/<\/head>/i\      <meta http-equiv="refresh" content="0;URL='"$url"manual/'">' _site/index.html
+      - name: Upload artifact
+        uses: actions/upload-pages-artifact@v3
+        with:
+          # Upload entire repository
+          path: '<docfx-project-path>/_site'
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4
