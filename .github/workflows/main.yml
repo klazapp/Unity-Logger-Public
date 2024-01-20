@@ -25,6 +25,9 @@ jobs:
         wget https://github.com/dotnet/docfx/releases/download/v2.58/docfx.zip
         unzip docfx.zip -d ./docfx
 
+    - name: Create docfx_project folder
+      run: mkdir docfx_project
+
     - name: Check for docfx.json
       run: |
         if [ ! -f docfx_project/docfx.json ]; then
@@ -92,19 +95,6 @@ jobs:
             }
           }' > docfx_project/docfx.json
         fi
-
-    - name: Debug Info
-      run: |
-        echo "Current directory:"
-        pwd
-        echo "Contents of the docfx_project folder:"
-        ls -R docfx_project
-        echo "Contents of the _site folder before build:"
-        ls -R docfx_project/_site
-        chmod +x ./docfx/docfx.exe
-        mono ./docfx/docfx.exe build docfx_project/docfx.json
-        echo "Contents of the _site folder after build:"
-        ls -R docfx_project/_site
 
     - name: Generate Documentation
       run: |
