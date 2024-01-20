@@ -7,3 +7,4 @@
    - [Usage](user-guide/usage.md)
 - [API Reference](api-reference.md)
 - [FAQ](faq.md)
+- [License](LICENSE.md)
