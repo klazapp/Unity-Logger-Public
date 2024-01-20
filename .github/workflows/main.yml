@@ -27,6 +27,7 @@ jobs:
 
     - name: Create folders in gh-pages branch
       run: |
+        git branch
         git checkout gh-pages
         mkdir -p Manual Api Changelog License
         git add Manual Api Changelog License
