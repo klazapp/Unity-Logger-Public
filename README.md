@@ -41,8 +41,6 @@ Enable logging by defining `ENABLE_LOGS` in your project's compilation symbols.
   - ~~**Error**~~: Critical problems that might cause system failure.
 - **User-Defined Categories**: Custom categories for logs to organize and filter messages easily.
 - **Context-Enhanced Logging**: Include class and script names in logs for precise source identification.
-- **In-Editor Console Integration**: Enhanced integration with Unity's in-editor console for better log management.
-- **Performance Profiling**: Tools to measure and report the performance impact of logging.
 
 ## License
 This utility is released under the [MIT License](LICENSE).
