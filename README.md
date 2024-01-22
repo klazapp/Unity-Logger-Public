@@ -18,6 +18,11 @@ To use `LogMessage`, certain dependencies are required. Ensure these are include
 |----------------------|-----|-----|------|
 | Compatible           | ✔️  | ✔️  | ✔️   |
 
+## Installation
+1. Open the Unity Package Manager (`Window` > `Package Manager`).
+2. Click `+`, select `Add package from git URL...`, and enter `https://github.com/klazapp/Unity-Logger-Public.git`.
+3. Unity will download and make the package available in your project.
+
 ## Usage
 ```csharp
 LogMessage.Debug("This is a debug message");
@@ -25,11 +30,6 @@ LogMessage.DebugError("This is an error message");
 LogMessage.DebugWarning("This is a warning message");
 ```
 Enable logging by defining `ENABLE_LOGS` in your project's compilation symbols.
-
-## Installation
-1. Open the Unity Package Manager (`Window` > `Package Manager`).
-2. Click `+`, select `Add package from git URL...`, and enter `https://github.com/klazapp/Unity-Logger-Public.git`.
-3. Unity will download and make the package available in your project.
 
 ## To-Do List (Future Features)
 - **File Logging**: Option to save logs to a file for post-mortem analysis.
